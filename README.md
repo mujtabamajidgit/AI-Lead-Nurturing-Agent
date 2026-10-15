@@ -35,3 +35,5 @@ It uses lead information such as name, email, service interest, budget, preferre
 
 ## Project Goal
 To automate parts of the lead nurturing process, improve follow-up consistency, and help businesses build stronger relationships with potential customers.
+
+<img width="1332" height="597" alt="image" src="https://github.com/user-attachments/assets/bb80fe76-36c4-4a15-bc69-38cf204d0135" />
