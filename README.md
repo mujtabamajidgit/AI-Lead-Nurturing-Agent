@@ -37,3 +37,10 @@ It uses lead information such as name, email, service interest, budget, preferre
 To automate parts of the lead nurturing process, improve follow-up consistency, and help businesses build stronger relationships with potential customers.
 
 <img width="1332" height="597" alt="image" src="https://github.com/user-attachments/assets/bb80fe76-36c4-4a15-bc69-38cf204d0135" />
+
+
+<img width="1170" height="591" alt="PIC" src="https://github.com/user-attachments/assets/bc5ada70-b6d7-46cb-befd-acb3f8e33c07" />
+
+<img width="1061" height="276" alt="PN" src="https://github.com/user-attachments/assets/315b70ac-d8bf-4042-80b2-cbf4ac24956f" />
+
+
