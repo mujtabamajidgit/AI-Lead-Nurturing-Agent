@@ -1,0 +1,376 @@
+{
+  "name": "Lead Nurturing",
+  "nodes": [
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1azywXa2KbpQ03LN0e6FrhDQKkn1uNBHrTcp5YFhYElE",
+          "mode": "list",
+          "cachedResultName": "Lead form (RESPONSES)",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1azywXa2KbpQ03LN0e6FrhDQKkn1uNBHrTcp5YFhYElE/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1azywXa2KbpQ03LN0e6FrhDQKkn1uNBHrTcp5YFhYElE/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -432,
+        -16
+      ],
+      "id": "c3b0427a-3a82-4e17-aa63-75ccd0aa5e81",
+      "name": "Get row(s) in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "wzcEw6Ntrrz2o5lP",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 1
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -160,
+        -16
+      ],
+      "id": "8afce2cf-63a4-455d-8c32-472db7030bce",
+      "name": "Wait",
+      "webhookId": "3e18c87b-b2a2-4d63-8c1e-d18aba70f691"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "models/gemini-3-flash-preview"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=You're a lead nurture assistant your job is to write a email to a new lead who just filled out the form on our website which is AI consultant website. Your name is Sam and you're working as a customer service representative for ABC Corp. Make sure your email is friendly and always sign off in professional way. You should never include any placeholder like [lead's name], [Your name], [Your company], etc. Please only address the leads by their first name if they entered their full name.\n\nHere the information about the lead : \nName : {{ $json['Name '] }}\nEmail : {{ $json['Email Address'] }}\nService Interested : {{ $json['Service Interested INN'] }}\nBudget Range :{{ $json['Budget range '] }}\nPreferred Contact Time : {{ $json['Preferred Contact time'] }}\nProject Timeline : {{ $json['Project time line '] }}\nAdditional Comments : {{ $json['Additional Commments'] }}",
+              "role": "model"
+            }
+          ]
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1.2,
+      "position": [
+        96,
+        -16
+      ],
+      "id": "1a1907e7-a12e-40e5-a7ee-a8df6b4fd80b",
+      "name": "Message a model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "cEYVNOmBj7NTaolv",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "=mujtabamajidbaig@gmail.com",
+        "subject": "Moving forward with your AI project at ABC Corp",
+        "message": "={{ $json.content.parts[0].text }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        464,
+        -192
+      ],
+      "id": "35ef1625-1d96-4335-923e-6b3faf65a04a",
+      "name": "Send a message",
+      "webhookId": "41808999-4cb9-4807-a39c-0ae3c8b80cf1",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "n2f7d7lq2wmBTWpK",
+          "name": "Gmail account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1azywXa2KbpQ03LN0e6FrhDQKkn1uNBHrTcp5YFhYElE",
+          "mode": "list",
+          "cachedResultName": "Lead form (RESPONSES)",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1azywXa2KbpQ03LN0e6FrhDQKkn1uNBHrTcp5YFhYElE/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1azywXa2KbpQ03LN0e6FrhDQKkn1uNBHrTcp5YFhYElE/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name ": "={{ $('Get row(s) in sheet').item.json['Name '] }}",
+            "Status": "={{ $('Get row(s) in sheet').item.json['Name '] }} was contacted by email on {{ $now }}\n\nthe team also been notified via slack.",
+            "Tag": "={{ $('Get row(s) in sheet').item.json.Tag }}"
+          },
+          "matchingColumns": [
+            "Name "
+          ],
+          "schema": [
+            {
+              "id": "Timestamp",
+              "displayName": "Timestamp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Name ",
+              "displayName": "Name ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Email Address",
+              "displayName": "Email Address",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Phone Number ",
+              "displayName": "Phone Number ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Service Interested INN",
+              "displayName": "Service Interested INN",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Budget range ",
+              "displayName": "Budget range ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Preferred Contact time",
+              "displayName": "Preferred Contact time",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Project time line ",
+              "displayName": "Project time line ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Additional Commments",
+              "displayName": "Additional Commments",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Tag",
+              "displayName": "Tag",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        464,
+        -16
+      ],
+      "id": "0b390729-b817-4d65-8f09-38fc5eedfdce",
+      "name": "Update row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "wzcEw6Ntrrz2o5lP",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C0C8S8RKWA2",
+          "mode": "list",
+          "cachedResultName": "all-lead-nurture"
+        },
+        "text": "=New Alert ⚠️\nName : {{ $json['Name '] }}\nInterest :{{ $json['Service Interested INN'] }}\nBudget : {{ $json['Budget range '] }}\nCheck the lead in google sheet for more details.\nhttps://docs.google.com/spreadsheets/d/1azywXa2KbpQ03LN0e6FrhDQKkn1uNBHrTcp5YFhYElE/edit?gid=0#gid=0",
+        "otherOptions": {
+          "includeLinkToWorkflow": false
+        }
+      },
+      "type": "n8n-nodes-base.slackTool",
+      "typeVersion": 2.7,
+      "position": [
+        480,
+        192
+      ],
+      "id": "4aff7ffd-becd-4cd5-9ae0-bbefc3c5069c",
+      "name": "Send a message in Slack",
+      "webhookId": "f70b4139-d05c-4b3a-8987-47a39c96c4c0",
+      "credentials": {
+        "slackOAuth2Api": {
+          "id": "WANYR2GV6VVnGiGn",
+          "name": "Slack account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Message a model",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message in Slack": {
+      "ai_tool": [
+        [
+          {
+            "node": "Message a model",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "fe576fc3-0eb8-4a4c-a98a-dc75c8229719",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "56607017d68f342e45e9cf6aeeae1b9181435c727032b7ef14e62a978ff58395"
+  },
+  "nodeGroups": [],
+  "id": "lwtIUyPTLbGusPYl",
+  "tags": []
+}
